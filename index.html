@@ -57,7 +57,7 @@
       const totalWidth = messages.length * tickerWidth;
       const position = (seconds * tickerSpeed) % totalWidth;
 
-      const tickerText = messages.join(" | ");
+      const tickerText = messages.join(" <BR> ");
       document.getElementById("tickerText").textContent = tickerText;
 
       document.getElementById("tickerText").style.transform = `translateX(${-position}px)`;
