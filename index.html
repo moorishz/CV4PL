@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time-Synced Text Ticker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .ticker {
+      white-space: nowrap;
+      overflow: hidden;
+      width: 100%;
+      background-color: #222;
+      color: white;
+      padding: 10px 0;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      font-size: 20px;
+    }
+    .ticker span {
+      display: inline-block;
+      white-space: nowrap;
+      will-change: transform;
+    }
+  </style>
+</head>
+<body>
+  <div class="ticker">
+    <span id="tickerText">Welcome to the live text ticker! Customize this message based on the time.</span>
+  </div>
+
+  <script>
+    const messages = [
+      "Breaking News: Stock prices are soaring!",
+      "Weather Update: It's sunny and warm today.",
+      "Event: Join us for the live webinar at 3 PM!",
+      "Sports: Local team wins the championship!",
+      "Tech: New smartphone released today!"
+    ];
+
+    const tickerSpeed = 200; // Pixels per second
+    const tickerWidth = 1000; // Approximate width in pixels of a single message
+
+    function updateTicker() {
+      const now = new Date();
+      const seconds = now.getSeconds() + (now.getMinutes() * 60); // Total seconds since the start of the minute
+      const totalWidth = messages.length * tickerWidth;
+      const position = (seconds * tickerSpeed) % totalWidth;
+
+      const tickerText = messages.join(" | ");
+      document.getElementById("tickerText").textContent = tickerText;
+
+      document.getElementById("tickerText").style.transform = `translateX(${-position}px)`;
+      requestAnimationFrame(updateTicker);
+    }
+
+    // Start the ticker
+    updateTicker();
+  </script>
+</body>
+</html>
