@@ -3,40 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Time-Synced Text Ticker</title>
+  <title>Continuous Text Ticker</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
       background-color: #f7f7f7;
       margin: 0;
       padding: 0;
       overflow: hidden;
     }
+
+    /* Ticker container */
     .ticker {
-      white-space: nowrap;
-      overflow: hidden;
+      position: fixed;
+      top: 0; /* Top of the page */
+      left: 0;
       width: 100%;
       background-color: yellow;
       color: red;
-      padding: 10px 0;
-      position: fixed; 
-      top:0;
-      bottom: 0;
-      left: 0;
       font-size: 20px;
-      z-index:9999;
+      z-index: 9999;
+      overflow: hidden;
+      border-bottom: 2px solid red;
     }
-    .ticker span {
-      display: inline-block;
+
+    /* Ticker content */
+    .ticker-content {
+      display: flex;
       white-space: nowrap;
-      will-change: transform;
+      animation: scroll 20s linear infinite;
+    }
+
+    .ticker-item {
+      padding: 0 2rem; /* Spacing between messages */
+    }
+
+    /* Continuous scrolling animation */
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
     }
   </style>
 </head>
 <body>
+
   <div class="ticker">
-    <span id="tickerText">Welcome to the live text ticker! Customize this message based on the time.</span>
+    <div class="ticker-content" id="tickerContent">
+      <!-- Messages will be inserted here -->
+    </div>
   </div>
 
   <script>
@@ -48,24 +66,23 @@
       "Tech: New smartphone released today!"
     ];
 
-    const tickerSpeed = 200; // Pixels per second
-    const tickerWidth = 1000; // Approximate width in pixels of a single message
+    function createTickerContent() {
+      const tickerContent = document.getElementById('tickerContent');
 
-    function updateTicker() {
-      const now = new Date();
-      const seconds = now.getSeconds() + (now.getMinutes() * 60); // Total seconds since the start of the minute
-      const totalWidth = messages.length * tickerWidth;
-      const position = (seconds * tickerSpeed) % totalWidth;
+      // Create ticker items for seamless looping
+      const fullMessages = [...messages, ...messages]; // Duplicate messages to ensure continuous scrolling
 
-      const tickerText = messages.join(" <BR> ");
-      document.getElementById("tickerText").textContent = tickerText;
-
-      document.getElementById("tickerText").style.transform = `translateX(${-position}px)`;
-      requestAnimationFrame(updateTicker);
+      fullMessages.forEach(message => {
+        const tickerItem = document.createElement('div');
+        tickerItem.className = 'ticker-item';
+        tickerItem.textContent = message;
+        tickerContent.appendChild(tickerItem);
+      });
     }
 
-    // Start the ticker
-    updateTicker();
+    // Initialize the ticker
+    createTickerContent();
   </script>
+
 </body>
 </html>
