@@ -101,7 +101,7 @@
       const tickerContent = document.getElementById('tickerContent');
 
       // Create ticker items for seamless looping
-      const fullMessages = [...messages,...messages]; // Duplicate messages to ensure continuous scrolling
+      const fullMessages = [...messages, ...messages]; // Duplicate messages to ensure continuous scrolling
       fullMessages.forEach(message => {
         const tickerItem = document.createElement('div');
         tickerItem.className = 'ticker-item';
