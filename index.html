@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CV4PL FREEDOM Chants</title>
+  <title>Vertical Text Ticker</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -16,10 +16,10 @@
     /* Ticker container */
     .ticker {
       position: fixed;
-      bottom: 0; /* Start at the bottom of the page */
+      bottom: 0; /* Start at the bottom */
       left: 0;
       width: 100%;
-      height: 100%; /* Full height to scroll vertically */
+      height: 100%; /* Full height of the page */
       background-color: yellow;
       overflow: hidden;
       z-index: 9999;
@@ -30,23 +30,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      animation: scrollUp 300s linear infinite;
+      position: absolute;
+      bottom: 0;
+      animation: scrollUp linear infinite;
       color: red;
       font-size: 24px;
     }
 
     .ticker-item {
       padding: 20px 0; /* Spacing between messages */
-    }
-
-    /* Keyframes for vertical scrolling */
-    @keyframes scrollUp {
-      0% {
-        transform: translateY(100%); /* Start from bottom */
-      }
-      100% {
-        transform: translateY(-100%); /* Move to top */
-      }
     }
   </style>
 </head>
@@ -60,7 +52,7 @@
 
   <script>
     const messages = [
-      "Israel BOMBS USA pays__How many kids have you killed today.",
+"Israel BOMBS USA pays__How many kids have you killed today.",
       "Israel what do you say?__How many kids did you kill today.",
       "Occupation is a crime__From LEBANON to PALESTINE",
       "Out of lebanon! Out of Iraq!__Out of Palestine and don’t come back!",
@@ -100,9 +92,9 @@
       "When Palestine is under attack What do we do? Stand up! Fight Back!",
       "Free, free Palestine! Long live Palestine!",
       "This is not acceptable. Jerusalem’s our capital!",
-      "israel what do you say? How many kids did you jail today?",
-      "Israel we know you! You imprison children too!", 
-      "End detention, stop the crimes! israel out of Palestine!"
+      "israel what do you say?__How many kids did you jail today?",
+      "Israel we know you!__You imprison children too!", 
+      "End detention, stop the crimes!__israel out of Palestine!"
     ];
 
     function createTickerContent() {
@@ -110,17 +102,22 @@
 
       // Create ticker items for seamless looping
       const fullMessages = [...messages, ...messages]; // Duplicate messages to ensure continuous scrolling
-
       fullMessages.forEach(message => {
         const tickerItem = document.createElement('div');
         tickerItem.className = 'ticker-item';
         tickerItem.textContent = message;
         tickerContent.appendChild(tickerItem);
       });
+
+      // Calculate total height of the ticker content
+      const contentHeight = tickerContent.scrollHeight;
+      
+      // Apply dynamic animation duration based on content height
+      tickerContent.style.animationDuration = `${contentHeight / 50}s`; // Adjust speed by modifying divisor
     }
 
-    // Initialize the ticker
-    createTickerContent();
+    // Initialize the ticker and trigger it immediately on load
+    window.onload = createTickerContent;
   </script>
 
 </body>
