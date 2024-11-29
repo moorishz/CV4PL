@@ -16,10 +16,10 @@
     /* Ticker container */
     .ticker {
       position: fixed;
-      bottom: 0; /* Start at the bottom of the page */
+      bottom: 0;
       left: 0;
       width: 100%;
-      height: 100%; /* Full height to scroll vertically */
+      height: 100%;
       background-color: yellow;
       overflow: hidden;
       z-index: 9999;
@@ -30,24 +30,17 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      animation: scrollUp 300s linear infinite;
+      position: absolute;
+      bottom: 0;
       color: red;
       font-size: 24px;
+      animation: none; /* Animation will be applied dynamically */
     }
 
     .ticker-item {
       padding: 20px 0; /* Spacing between messages */
     }
 
-    /* Keyframes for vertical scrolling */
-    @keyframes scrollUp {
-      0% {
-        transform: translateY(100%); /* Start from bottom */
-      }
-      100% {
-        transform: translateY(-100%); /* Move to top */
-      }
-    }
   </style>
 </head>
 <body>
@@ -60,30 +53,50 @@
 
   <script>
     const messages = [
-      "When Palestine is under attack What do we do? Stand up! Fight Back!",
-      "Free, free Palestine! Long live Palestine!",
+      "When Palestine is under attack, what do we do? Stand up! Fight back!",
+      "Free, free Palestine! Long live Palestine!",
       "This is not acceptable. Jerusalem’s our capital!",
-      "israel what do you say? How many kids did you jail today?",
-      "Israel we know you! You imprison children too!", 
-      "End detention, stop the crimes! israel out of Palestine!"
+      "Israel, what do you say? How many kids did you jail today?",
+      "Israel, we know you! You imprison children too!",
+      "End detention, stop the crimes! Israel out of Palestine!"
     ];
 
     function createTickerContent() {
       const tickerContent = document.getElementById('tickerContent');
 
       // Create ticker items for seamless looping
-      const fullMessages = [...messages, ...messages]; // Duplicate messages to ensure continuous scrolling
-
+      const fullMessages = [...messages, ...messages]; // Duplicate messages for continuous scrolling
       fullMessages.forEach(message => {
         const tickerItem = document.createElement('div');
         tickerItem.className = 'ticker-item';
         tickerItem.textContent = message;
         tickerContent.appendChild(tickerItem);
       });
+
+      // Calculate total height of the content
+      const contentHeight = tickerContent.scrollHeight;
+
+      // Set the initial position and animation
+      tickerContent.style.bottom = `-${contentHeight}px`; // Start off-screen
+      tickerContent.style.animation = `scrollUp ${contentHeight / 30}s linear infinite`;
     }
 
+    // Keyframes dynamically inserted for smoother scrolling
+    const styleSheet = document.createElement("style");
+    styleSheet.innerHTML = `
+      @keyframes scrollUp {
+        0% {
+          transform: translateY(100%); /* Start from bottom */
+        }
+        100% {
+          transform: translateY(-100%); /* Scroll to top */
+        }
+      }
+    `;
+    document.head.appendChild(styleSheet);
+
     // Initialize the ticker
-    createTickerContent();
+    window.onload = createTickerContent;
   </script>
 
 </body>
